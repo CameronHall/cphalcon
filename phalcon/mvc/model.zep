@@ -4285,6 +4285,17 @@ abstract class Model implements EntityInterface, ModelInterface, ResultInterface
 			extraArgs
 		);
 	}
+	
+	/**
+	 * Check if relationship is loaded or not
+	 *
+	 * @param  string relationship alias
+	 * @return boolean
+	 */
+	public function loadedRelated(relationshipAlias)
+	{
+	   return isset this->_related[relationshipAlias];
+	}
 
 	/**
 	 * Try to check if the query must invoke a finder
