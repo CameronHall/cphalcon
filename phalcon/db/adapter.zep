@@ -470,7 +470,7 @@ abstract class Adapter implements AdapterInterface, EventsAwareInterface
 
 			let escapedField = this->escapeIdentifier(field);
 			if typeof value == "object" && value instanceof RawValue {
-				let placeholders[] = (string) value;
+				let placeholders[] = escapedField . " = " . (string) value;
 			} else {
 				if typeof value == "object" {
 					let value = (string) value;
