@@ -319,20 +319,24 @@ abstract class Adapter implements AdapterInterface, EventsAwareInterface
 		 * Objects are casted using __toString, null values are converted to string "null", everything else is passed as "?"
 		 */
 		for position, value in values {
-			if typeof value == "object" {
-				let value = (string) value;
-			}
-			
-			if typeof value == "null" {
-				let placeholders[] = "null";
+			if typeof value == "object" && value instanceof Phalcon\Db\RawValue {
+				let placeholders[] = (string) value;
 			} else {
-				let placeholders[] = "?";
-				let insertValues[] = value;
-				if typeof dataTypes == "array" {
-					if !fetch bindType, dataTypes[position] {
-						throw new Exception("Incomplete number of bind types");
+				if typeof value == "object" {
+					let value = (string) value;
+				}
+
+				if typeof value == "null" {
+					let placeholders[] = "null";
+				} else {
+					let placeholders[] = "?";
+					let insertValues[] = value;
+					if typeof dataTypes == "array" {
+						if !fetch bindType, dataTypes[position] {
+							throw new Exception("Incomplete number of bind types");
+						}
+						let bindDataTypes[] = bindType;
 					}
-					let bindDataTypes[] = bindType;
 				}
 			}
 		}
@@ -465,21 +469,25 @@ abstract class Adapter implements AdapterInterface, EventsAwareInterface
 			}
 
 			let escapedField = this->escapeIdentifier(field);
-			if typeof value == "object" {
-				let value = (string) value;
-			}
-
-			if typeof value == "null" {
-				let placeholders[] = escapedField . " = null";
+			if typeof value == "object" && value instanceof Phalcon\Db\RawValue {
+				let placeholders[] = (string) value;
 			} else {
-				let updateValues[] = value;
-				if typeof dataTypes == "array" {
-					if !fetch bindType, dataTypes[position] {
-						throw new Exception("Incomplete number of bind types");
-					}
-					let bindDataTypes[] = bindType;
+				if typeof value == "object" {
+					let value = (string) value;
 				}
-				let placeholders[] = escapedField . " = ?";
+
+				if typeof value == "null" {
+					let placeholders[] = escapedField . " = null";
+				} else {
+					let updateValues[] = value;
+					if typeof dataTypes == "array" {
+						if !fetch bindType, dataTypes[position] {
+							throw new Exception("Incomplete number of bind types");
+						}
+						let bindDataTypes[] = bindType;
+					}
+					let placeholders[] = escapedField . " = ?";
+				}
 			}
 		}
 
