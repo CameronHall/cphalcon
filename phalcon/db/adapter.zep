@@ -319,7 +319,7 @@ abstract class Adapter implements AdapterInterface, EventsAwareInterface
 		 * Objects are casted using __toString, null values are converted to string "null", everything else is passed as "?"
 		 */
 		for position, value in values {
-			if typeof value == "object" && value instanceof Phalcon\Db\RawValue {
+			if typeof value == "object" && value instanceof RawValue {
 				let placeholders[] = (string) value;
 			} else {
 				if typeof value == "object" {
@@ -469,7 +469,7 @@ abstract class Adapter implements AdapterInterface, EventsAwareInterface
 			}
 
 			let escapedField = this->escapeIdentifier(field);
-			if typeof value == "object" && value instanceof Phalcon\Db\RawValue {
+			if typeof value == "object" && value instanceof RawValue {
 				let placeholders[] = (string) value;
 			} else {
 				if typeof value == "object" {
