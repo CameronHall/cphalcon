@@ -16,6 +16,7 @@
   [#12648](https://github.com/phalcon/cphalcon/issues/12648),
   [#12705](https://github.com/phalcon/cphalcon/issues/12705),
   [#13288](https://github.com/phalcon/cphalcon/pull/13288)
+- Created method `Phalcon\Mvc\Model::isRelationshipLoaded` to check if relationship is loaded
 
 # [3.4.1](https://github.com/phalcon/cphalcon/releases/tag/v3.4.1) (2018-08-04)
 - Changed `Phalcon\Cache\Backend\Redis` to support connection timeout parameter

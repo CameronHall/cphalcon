@@ -4292,7 +4292,7 @@ abstract class Model implements EntityInterface, ModelInterface, ResultInterface
 	 * @param  string relationship alias
 	 * @return boolean
 	 */
-	public function loadedRelated(relationshipAlias)
+	public function isRelationshipLoaded(relationshipAlias)
 	{
 	   return isset this->_related[relationshipAlias];
 	}
@@ -4593,11 +4593,9 @@ abstract class Model implements EntityInterface, ModelInterface, ResultInterface
 				let this->{lowerProperty} = result;
 
 				/**
-				 * For belongs-to relations we store the object in the related bag
+				 * We store related object in the related bag
 				 */
-				if result instanceof ModelInterface {
-					let this->_related[lowerProperty] = result;
-				}
+				let this->_related[lowerProperty] = result;
 			}
 
 			return result;
