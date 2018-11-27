@@ -6,8 +6,8 @@ use DateTime;
 use Helper\ModelTrait;
 use Phalcon\Cache\Backend\Apc;
 use Phalcon\Cache\Frontend\Data;
+use Phalcon\Messages\Message;
 use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Model\Message;
 use Phalcon\Mvc\Model\Resultset\Simple;
 use Phalcon\Test\Models\AlbumORama\Albums;
 use Phalcon\Test\Models\BodyParts\Body;
@@ -894,6 +894,28 @@ class ModelTest extends UnitTest
                 );
 
                 expect(false, $subscriber);
+            }
+        );
+    }
+
+    /**
+     * Tests binding of non-scalar values by casting to string and binding them.
+     *
+     * @issue  https://github.com/phalcon/cphalcon/issues/13058
+     * @author Cameron Hall <me@chall.id.au>
+     * @since  2018-11-06
+     */
+    public function testIssue13058()
+    {
+        $this->specify(
+            'Issue 13058 is happening, non-scalar values are not being casted and bound.',
+            function () {
+                $robots = new Robots();
+                $robots->name = '';
+                $robots->datetime = new \Phalcon\Test\Db\DateTime();
+                $robots->text = 'text';
+                $result = $robots->save();
+                expect($result)->true();
             }
         );
     }

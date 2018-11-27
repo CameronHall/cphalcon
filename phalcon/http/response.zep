@@ -288,6 +288,21 @@ class Response implements ResponseInterface, InjectionAwareInterface
 	}
 
 	/**
+	 * Checks if a header exists
+	 *
+	 *<code>
+	 * $response->hasHeader("Content-Type");
+	 *</code>
+	 */
+	public function hasHeader(string name) -> boolean
+	{
+		var headers;
+		let headers = this->getHeaders();
+
+		return headers->has(name);
+	}
+
+	/**
 	 * Overwrites a header in the response
 	 *
 	 *<code>
@@ -662,7 +677,7 @@ class Response implements ResponseInterface, InjectionAwareInterface
 		if attachment {
 			this->setRawHeader("Content-Description: File Transfer");
 			this->setRawHeader("Content-Type: application/octet-stream");
-			this->setRawHeader("Content-Disposition: attachment; filename=" . basePath);
+			this->setRawHeader("Content-Disposition: attachment; filename=" . basePath . ";");
 			this->setRawHeader("Content-Transfer-Encoding: binary");
 		}
 

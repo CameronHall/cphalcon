@@ -91,6 +91,14 @@ class Dispatcher extends CliDispatcher implements DispatcherInterface
 	}
 
 	/**
+	 * Gets the default task suffix
+	 */
+	public function getTaskSuffix() -> string
+	{
+		return this->_handlerSuffix;
+	}
+
+	/**
 	 * Throws an internal exception
 	 */
 	protected function _throwDispatchException(string message, int exceptionCode = 0)

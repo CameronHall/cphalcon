@@ -21,9 +21,8 @@ namespace Phalcon\Forms;
 
 use Phalcon\Tag;
 use Phalcon\Forms\Exception;
-use Phalcon\Validation\Message;
-use Phalcon\Validation\MessageInterface;
-use Phalcon\Validation\Message\Group;
+use Phalcon\Messages\MessageInterface;
+use Phalcon\Messages\Messages;
 use Phalcon\Validation\ValidatorInterface;
 
 /**
@@ -65,7 +64,7 @@ abstract class Element implements ElementInterface
 
 		let this->_name = name;
 		let this->_attributes = attributes;
-		let this->_messages = new Group();
+		let this->_messages = new Messages();
 	}
 
 	/**
@@ -408,36 +407,30 @@ abstract class Element implements ElementInterface
 	}
 
 	/**
-	 * Returns the element value
+	 * Returns the element's value
 	 */
 	public function getValue() -> var
 	{
-		var name, form, value;
-
-		let name = this->_name,
+		var name  = this->_name,
+		    form  = this->_form,
 			value = null;
-
+		
 		/**
-		 * Get the related form
+		 * If element belongs to the form, get value from the form
 		 */
-		let form = this->_form;
 		if typeof form == "object" {
-			/**
-			 * Gets the possible value for the widget
-			 */
-			let value = form->getValue(name);
-
-			/**
-			 * Check if the tag has a default value
-			 */
-			if typeof value == "null" && Tag::hasValue(name) {
-				let value = Tag::getValue(name);
-			}
-
+			return form->getValue(name);
+		}
+		
+		/**
+		 * Otherwise check Phalcon\Tag
+		 */
+		if Tag::hasValue(name) {
+			let value = Tag::getValue(name);
 		}
 
 		/**
-		 * Assign the default value if there is no form available
+		 * Assign the default value if there is no form available or Phalcon\Tag returns null
 		 */
 		if typeof value == "null" {
 			let value = this->_value;
@@ -450,7 +443,7 @@ abstract class Element implements ElementInterface
 	 * Returns the messages that belongs to the element
 	 * The element needs to be attached to a form
 	 */
-	public function getMessages() -> <Group>
+	public function getMessages() -> <Messages>
 	{
 		return this->_messages;
 	}
@@ -466,9 +459,9 @@ abstract class Element implements ElementInterface
 	/**
 	 * Sets the validation messages related to the element
 	 */
-	public function setMessages(<Group> group) -> <ElementInterface>
+	public function setMessages(<Messages> messages) -> <ElementInterface>
 	{
-		let this->_messages = group;
+		let this->_messages = messages;
 		return this;
 	}
 
@@ -482,11 +475,20 @@ abstract class Element implements ElementInterface
 	}
 
 	/**
-	 * Clears every element in the form to its default value
+	 * Clears element to its default value
 	 */
 	public function clear() -> <Element>
 	{
-		Tag::setDefault(this->_name, null);
+		var form  = this->_form,
+			name  = this->_name,
+			value = this->_value;
+
+		if typeof form == "object" {
+			form->clear(name);
+		} else {
+			Tag::setDefault(name, value);
+		}
+
 		return this;
 	}
 
