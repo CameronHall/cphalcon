@@ -25,7 +25,6 @@ addons:
 
 matrix:
   fast_finish: true
-  # PHP 7.4 is not ready yet
   allow_failures:
    - php: 'master'
    - php: '7.4'
