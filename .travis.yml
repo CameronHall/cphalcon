@@ -2,7 +2,6 @@ sudo: false
 
 language: php
 php:
-  # PHP 7.4 is not ready yet
   - 'master'
   - '7.4'
   - '7.3'
